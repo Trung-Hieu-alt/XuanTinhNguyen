@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gây Quỹ Xuân Tình Nguyện 2027</title>
+        <link rel="stylesheet" href="Styles.css">
+</head>
+<body>
+
+    <header class="hero">
+        <div class="hero-content">
+            <p class="hero-kicker">Gây quỹ Xuân Tình Nguyện 2027</p>
+            <h1>Góp một mùa xuân,<br><span>trao ngàn yêu thương.</span></h1>
+            <p class="hero-description">
+                Mỗi sự chung tay hôm nay sẽ góp nên một mùa Tết ấm áp hơn.
+                Cùng nhau gây quỹ, sẻ chia và lan tỏa tinh thần tình nguyện.
+            </p>
+            <div class="hero-actions">
+                <button class="hero-button" type="button" onclick="switchTab('mat-hang', this)">Khám phá gian hàng <span aria-hidden="true">&nbsp;→</span></button>
+                <span class="hero-note">Xuân sẻ chia · Tết đong đầy</span>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-inner">
+            <button class="nav-btn active" data-tab="mat-hang" onclick="switchTab('mat-hang', this)">Gian hàng gây quỹ</button>
+            <button class="nav-btn" data-tab="dang-ki" onclick="switchTab('dang-ki', this)">Đăng ký ca trực</button>
+            <button class="nav-btn" data-tab="lich-truc" onclick="switchTab('lich-truc', this)">Lịch trực</button>
+            <button class="nav-btn" data-tab="diem-danh" onclick="switchTab('diem-danh', this)">Điểm danh & quản ca</button>
+            <button class="nav-btn" data-tab="danh-sach-quan-ca" onclick="switchTab('danh-sach-quan-ca', this); restoreQuanCaDraft()">Danh sách quản ca</button>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <!-- Tab 1: Các Loại Mặt Hàng -->
+        <div id="mat-hang" class="tab-content active">
+            <h2>Gian hàng gây quỹ</h2>
+            <p class="section-lead">Mỗi món quà nhỏ là một lời chúc xuân và một tấm lòng được gửi trao.</p>
+            <div class="product-grid" id="productContainer">
+            </div>
+        </div>
+
+        <!-- Tab 2: Đăng Ký Ca Trực -->
+        <div id="dang-ki" class="tab-content">
+            <h2>Đăng ký ca trực</h2>
+            <p class="section-lead">Chọn ca phù hợp nhé <3</p>
+            
+            <div class="notice-box">
+                <h4>I. Cách thức đăng ký ca trực:</h4>
+                <p>1. Các bạn hãy đọc kỹ thông tin và điền đúng theo yêu cầu.</p>
+                <p>2. Khi các bạn điền sai, hãy thông báo cho Leader hoặc trưởng Ban Gây Quỹ.</p>
+                <hr>
+                <h4>II. THỜI GIAN ĐĂNG KÝ:</h4>
+                <p>Đăng ký trước 21h hằng ngày (Sau 21h đăng bài, các bạn tự ý hủy ca thì bị tính vi phạm).</p>
+                <p><i>Thông tin đến các bạn nhé !!!</i></p>
+            </div>
+
+            <form id="formDangKy" onsubmit="submitForm(event, 'dangKyCa')">
+                <div class="form-group">
+                    <label>Họ và Tên:</label>
+                    <input type="text" id="dkHoTen" required placeholder="Nhập đầy đủ họ tên">
+                </div>
+
+                <div class="form-group">
+                    <label>Ngày Trực:</label>
+                    <input type="date" id="dkNgay" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Ca Trực:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="dkCa" value="Ca 1"> Ca 1 (7h30-9h30)</label>
+                        <label><input type="checkbox" name="dkCa" value="Ca 2"> Ca 2 (9h30-11h30)</label>
+                        <label><input type="checkbox" name="dkCa" value="Ca 3"> Ca 3 (13h30-15h30)</label>
+                        <label><input type="checkbox" name="dkCa" value="Ca 4"> Ca 4 (15h30-17h30)</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Vai Trò:</label>
+                    <select id="dkVaiTro">
+                        <option value="Cộng tác viên">Cộng tác viên</option>
+                        <option value="Quản ca">Quản ca</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-submit">Đăng Ký Ca</button>
+            </form>
+        </div>
+
+        <!-- Tab 3: Lịch Trực -->
+<!-- Tab 3: Lịch Trực -->
+<div id="lich-truc" class="tab-content">
+    <h2>Lịch trực gây quỹ</h2>
+    <p class="section-lead">Theo dõi lịch phân công theo từng ngày.</p>
+    <div id="scheduleView">
+        <!-- Lịch trực được tải tự động từ Google Sheets -->
+    </div>
+</div>
+
+        <!-- Tab 4: Điểm Danh và Quản Ca -->
+        <div id="diem-danh" class="tab-content">
+            <h2>Điểm danh & quản ca</h2>
+            <p class="section-lead">Cập nhật tình hình ca trực.</p>
+            
+            <!-- Phần Điểm Danh -->
+            <h3>1. Điểm Danh</h3>
+            <form id="formDiemDanh" onsubmit="submitForm(event, 'diemDanh')">
+                <div class="form-group">
+                    <label>Họ và Tên:</label>
+                    <input type="text" id="ddHoTen" required placeholder="Nhập tên">
+                </div>
+                <div class="form-group">
+                    <label>Team:</label>
+                    <input type="text" id="ddTeam" required placeholder="Nhập tên Nhóm">
+                </div>
+                <div class="form-group">
+                    <label>Ngày Trực:</label>
+                    <input type="date" id="ddNgay" required>
+                </div>
+                <div class="form-group">
+                    <label>Ca Trực:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="ddCa" value="Ca 1"> Ca 1</label>
+                        <label><input type="checkbox" name="ddCa" value="Ca 2"> Ca 2</label>
+                        <label><input type="checkbox" name="ddCa" value="Ca 3"> Ca 3</label>
+                        <label><input type="checkbox" name="ddCa" value="Ca 4"> Ca 4</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">Gửi Điểm Danh</button>
+            </form>
+
+            <hr style="margin: 30px 0;">
+
+            <!-- Phần Quản Ca -->
+            <h3>2. Nhật Ký Quản Ca (Xuất / Trả Hàng)</h3>
+            <form id="formQuanCa" onsubmit="submitForm(event, 'quanCa')">
+                <div class="form-group">
+                    <label>Họ tên người nhận hàng:</label>
+                    <input type="text" id="qcHoTen" required placeholder="">
+                </div>
+                <div class="form-group">
+                    <label>Team:</label>
+                    <input type="text" id="qcTeam" required placeholder="">
+                </div>
+                <div class="form-group">
+                    <label>Tên mặt hàng:</label>
+                    <input type="text" id="qcMatHang" list="productNameOptions" required placeholder="">
+                    <datalist id="productNameOptions"></datalist>
+                </div>
+                <div class="form-group">
+                    <label>Số lượng xuất:</label>
+                    <input type="number" id="qcXuat" required min="0" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label for="qcTra">Số lượng trả lại:</label>
+                    <input type="number" id="qcTra" required min="0" placeholder="Chưa biết thì bấm Lưu tạm">
+                    <span class="field-hint">Khi kết thúc ca, mở lại bản nháp và nhập số lượng trả. Số lượng còn lại sẽ tự tính.</span>
+                </div>
+                <div class="form-group">
+                    <label for="qcConLai">Số lượng còn lại:</label>
+                    <input type="number" id="qcConLai" placeholder="" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="qcTien">Thành tiền (VNĐ):</label>
+                    <input type="number" id="qcTien" placeholder="Chưa có giá mặt hàng" readonly>
+                    <span class="field-hint" id="qcTienHint">Thành tiền = (số lượng xuất − số lượng trả) × đơn giá mặt hàng.</span>
+                </div>
+                <div class="form-group">
+                    <label>Trạng thái thanh toán:</label>
+                    <select id="qcTrangThai">
+                        <option value="Chưa CK">Chưa Thanh Toán</option>
+                        <option value="Đã CK">Đã Thanh Toán</option>
+                    </select>
+                </div>
+                <div class="hero-actions">
+                    <button type="button" class="btn-submit" id="btnLuuTam" style="background-color: #786e65;">Lưu tạm</button>
+                    <button type="button" class="btn-submit" onclick="taoBanGhiQuanCaMoi()" style="background-color: #a97936;">Nhập người tiếp theo</button>
+                    <button type="submit" class="btn-submit" style="background-color: #287348;">Lưu nhật ký cuối ca</button>
+                </div>
+                <p class="form-status" id="qcDraftStatus" role="status" aria-live="polite"></p>
+            </form>
+        </div>
+
+        <div id="danh-sach-quan-ca" class="tab-content">
+            <h2>Danh sách quản ca</h2>
+            <p class="section-lead">Danh sách dùng chung từ Google Sheets. Mở từng bản ghi để cập nhật số lượng trả cuối ca.</p>
+            <button type="button" class="btn-submit" onclick="taoBanGhiQuanCaMoi()">+ Thêm bản ghi mới</button>
+            <div class="manager-draft-list" id="quanCaDraftList" aria-live="polite"></div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p><b>MỌI THÔNG TIN LIÊN HỆ:</b></p>
+        <p>Trưởng Gây Quỹ: Nguyễn Trung Hiếu - SDT: 0942429663</p>
+        <p>Đội trưởng: Nguyễn Minh Quốc - SDT: <span id="sdt-doi-truong"></span></p>
+        <p>Fanpage: <a href="#" id="link-fanpage"></a></p>
+    </footer>
+
+        <script src="Scripts.js"></script>
+</body>
+</html>
